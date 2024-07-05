@@ -4,6 +4,8 @@
 
 #include "config.h"
 
+#include <memory>
+
 UdsQueryManager udsQueryManager;
 
 void setup()
@@ -43,10 +45,10 @@ void setup()
     return;
   }
 
-  UdsFuelTankLevelQuery fuelQuery([](float value)
-                                  { Serial.printf("Fuel: %.1f\r\n", value); }, 1500);
+  std::unique_ptr<UdsFuelTankLevelQuery> uptr (new UdsFuelTankLevelQuery([](float value)
+                                  { Serial.printf("Fuel: %.1f\r\n", value); }, 1500));
 
-  udsQueryManager.addQuery(fuelQuery);
+  udsQueryManager.addQuery(std::move(uptr));
   Serial.println("fuelQuery added to udsQueryManager");
 }
 

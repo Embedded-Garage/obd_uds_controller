@@ -5,7 +5,6 @@
 
 UdsFuelTankLevelQuery::UdsFuelTankLevelQuery(const UdsFuelTankLevelCallback callback, const uint32_t interval) : UdsQuery(FUEL_TANK_LEVEL_PID, interval),
                                                                                                                  callback(callback)
-
 {
     callback(1234.0f);
 }

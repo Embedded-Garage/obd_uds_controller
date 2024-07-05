@@ -1,7 +1,6 @@
 #include "UdsQueryManager.h"
 
 #include "driver/twai.h"
-
 #include <Arduino.h>
 
 void UdsQueryManager::loop(const uint32_t time_ms)
@@ -10,9 +9,9 @@ void UdsQueryManager::loop(const uint32_t time_ms)
     checkTx(time_ms);
 }
 
-void UdsQueryManager::addQuery(const UdsQuery &query)
+void UdsQueryManager::addQuery(std::unique_ptr<UdsQuery> &&query)
 {
-    queries.push_back(query);
+    queries.push_back(std::move(query));
 }
 
 void UdsQueryManager::checkRx(const uint32_t time_ms)
@@ -25,16 +24,16 @@ void UdsQueryManager::checkRx(const uint32_t time_ms)
         {
             const uds_frame_s *const uds_frame = (const uds_frame_s *)rx_msg.data;
 
-            for (auto &query : queries)
+            for (auto &query_uptr : queries)
             {
-                if (query.getPid() == uds_frame->pid)
+                auto *query = query_uptr.get();
+                if (query->getPid() == uds_frame->pid)
                 {
-                    Serial.println("resp rcvd");
-                    query.responseReceived(rx_msg);
+                    query->responseReceived(rx_msg);
 
                     /* calculate response time */
-                    const uint32_t time_from_last_shoot = time_ms - query.getTimestamp();
-                    query.setLastResponseTime(time_from_last_shoot);
+                    const uint32_t time_from_last_shoot = time_ms - query->getTimestamp();
+                    query->setLastResponseTime(time_from_last_shoot);
                 }
             }
         }
@@ -45,15 +44,16 @@ void UdsQueryManager::checkTx(const uint32_t time_ms)
 {
     twai_message_t tx_msg;
 
-    for (auto &query : queries)
+    for (auto &query_uptr : queries)
     {
-        const uint32_t time_from_last_shoot = time_ms - query.getTimestamp();
-        if (time_from_last_shoot >= query.getInterval())
+        auto *query = query_uptr.get();
+        const uint32_t time_from_last_shoot = time_ms - query->getTimestamp();
+        if (time_from_last_shoot >= query->getInterval())
         {
-            tx_msg = query.buildQuery();
+            tx_msg = query->buildQuery();
             if (ESP_OK == twai_transmit(&tx_msg, 0))
             {
-                query.setTimestamp(time_ms);
+                query->setTimestamp(time_ms);
             }
         }
     }

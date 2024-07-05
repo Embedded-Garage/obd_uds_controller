@@ -37,10 +37,7 @@ public:
 
     // todo virtual
     // todo zdecydowac gdzie rozkodowywac/kodowac twai_msg do uds_frame
-    virtual void responseReceived(const twai_message_t &msg)
-    {
-        Serial.println("base resp_rcvd");
-    };
+    virtual void responseReceived(const twai_message_t &msg) = 0;
 
 private:
     const uint32_t interval;
