@@ -45,8 +45,6 @@ void setup()
     return;
   }
 
-  // std::unique_ptr<UdsFuelTankLevelQuery> uptr (new UdsFuelTankLevelQuery([](float value)
-  //                                 { Serial.printf("Fuel: %.1f\r\n", value); }, 1500));
   auto uptr = std::make_unique<UdsFuelTankLevelQuery>([](float value)
                                   { Serial.printf("Fuel: %.1f\r\n", value); }, 1500);
 
