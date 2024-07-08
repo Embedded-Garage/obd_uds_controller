@@ -19,7 +19,7 @@ twai_message_t UdsQuery::buildQuery()
     msg.extd = 0u;
 
     uds_frame_s *uds_frame = (uds_frame_s *)msg.data;
-    uds_frame->length = 0x02u;
+    uds_frame->add_bytes = 0x02u;
     uds_frame->pid = pid;
     uds_frame->service = UDS_SERVICE_CURR_DATA;
     memset(uds_frame->data, 0xAA, sizeof(uds_frame->data));

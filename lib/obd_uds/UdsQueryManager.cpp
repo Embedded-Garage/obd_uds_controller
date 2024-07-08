@@ -2,6 +2,7 @@
 
 #include "driver/twai.h"
 #include <Arduino.h>
+#include <vector>
 
 void UdsQueryManager::loop(const uint32_t time_ms)
 {
@@ -29,7 +30,8 @@ void UdsQueryManager::checkRx(const uint32_t time_ms)
                 auto *query = query_uptr.get();
                 if (query->getPid() == uds_frame->pid)
                 {
-                    query->responseReceived(rx_msg);
+                    auto data = std::vector<uint8_t>(std::begin(rx_msg.data), std::end(rx_msg.data));
+                    query->responseReceived(data);
 
                     /* calculate response time */
                     const uint32_t time_from_last_shoot = time_ms - query->getTimestamp();

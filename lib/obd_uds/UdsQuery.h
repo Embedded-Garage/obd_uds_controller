@@ -9,7 +9,7 @@
 #pragma pack(push, 1)
 using uds_frame_s = struct
 {
-    uint8_t length;
+    uint8_t add_bytes;
     uint8_t service;
     uint8_t pid;
     uint8_t data[5u];
@@ -17,6 +17,9 @@ using uds_frame_s = struct
 #pragma pack(pop)
 
 #define UDS_SERVICE_CURR_DATA 1u
+#define UDS_SERVICE_FREEZE_FRAME_DATA 2u
+#define UDS_SERVICE_STORED_DIAG_CODES 3u
+#define UDS_SERVICE_CLEAR_STORED_DIAG_CODES 4u
 
 class UdsQuery
 {
@@ -37,7 +40,7 @@ public:
 
     // todo virtual
     // todo zdecydowac gdzie rozkodowywac/kodowac twai_msg do uds_frame
-    virtual void responseReceived(const twai_message_t &msg) = 0;
+    virtual void responseReceived(const std::vector<uint8_t> &data) = 0;
 
 private:
     const uint32_t interval;
