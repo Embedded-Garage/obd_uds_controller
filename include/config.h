@@ -4,9 +4,15 @@
 // PIN
 #define PIN_5V_EN 16
 
-#define CAN_TX_PIN 26
-#define CAN_RX_PIN 27
-#define CAN_SE_PIN 23
+// lilygo
+// #define CAN_TX_PIN 26
+// #define CAN_RX_PIN 27
+// #define CAN_SE_PIN 23
+
+// wiwik
+#define CAN_TX_PIN 33
+#define CAN_RX_PIN 25
+#define CAN_SE_PIN 4
 
 #define RS485_EN_PIN 17 // 17 /RE
 #define RS485_TX_PIN 22 // 21

@@ -2,7 +2,7 @@
 
 #include "UdsQuery.h"
 
-#define VEHICLE_SPEED_PID 0x05u
+#define VEHICLE_SPEED_PID 0x0Du
 
 using UdsVehicleSpeedQueryCallback = std::function<void(uint8_t)>;
 

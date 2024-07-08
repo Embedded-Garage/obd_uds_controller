@@ -56,6 +56,7 @@ void UdsQueryManager::checkTx(const uint32_t time_ms)
             if (ESP_OK == twai_transmit(&tx_msg, 0))
             {
                 query->setTimestamp(time_ms);
+                break;
             }
         }
     }

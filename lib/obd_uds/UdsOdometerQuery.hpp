@@ -2,7 +2,7 @@
 
 #include "UdsQuery.h"
 
-#define FUEL_TANK_LEVEL_PID 0x2Fu
+#define ODOMETER_ID 0xA6u
 
 using UdsOdometerQueryCallback = std::function<void(uint32_t)>;
 
@@ -11,7 +11,7 @@ class UdsOdometerQuery : public UdsQuery
 public:
     UdsOdometerQuery(const UdsOdometerQueryCallback callback,
                      const uint32_t interval = 0u)
-        : UdsQuery(FUEL_TANK_LEVEL_PID, interval),
+        : UdsQuery(ODOMETER_ID, interval),
           callback(callback) {}
 
     void responseReceived(const std::vector<uint8_t> &data) override
