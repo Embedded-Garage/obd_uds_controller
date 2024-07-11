@@ -30,8 +30,7 @@ void UdsQueryManager::checkRx(const uint32_t time_ms)
                 auto *query = query_uptr.get();
                 if (query->getPid() == uds_frame->pid)
                 {
-                    auto data = std::vector<uint8_t>(std::begin(rx_msg.data), std::end(rx_msg.data));
-                    query->responseReceived(data);
+                    query->responseReceived(rx_msg.data, rx_msg.data_length_code);
 
                     /* calculate response time */
                     const uint32_t time_from_last_shoot = time_ms - query->getTimestamp();

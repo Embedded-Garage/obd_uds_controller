@@ -38,9 +38,7 @@ public:
 
     uint8_t getPid();
 
-    // todo virtual
-    // todo zdecydowac gdzie rozkodowywac/kodowac twai_msg do uds_frame
-    virtual void responseReceived(const std::vector<uint8_t> &data) = 0;
+    virtual void responseReceived(const uint8_t *const data, const uint8_t len) = 0;
 
 private:
     const uint32_t interval;

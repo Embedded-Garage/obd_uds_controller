@@ -49,19 +49,19 @@ void setup()
     return;
   }
 
-  auto tankLevelQuery = std::make_unique<UdsFuelTankLevelQuery>([](float value)
+  auto tankLevelQuery = std::make_unique<UdsFuelTankLevelQuery>([](const float value)
                                                                 { Serial.printf("Fuel: %.1f\r\n", value); }, 1000);
 
-  auto odometerQuery = std::make_unique<UdsOdometerQuery>([](uint32_t value)
+  auto odometerQuery = std::make_unique<UdsOdometerQuery>([](const uint32_t value)
                                                           { Serial.printf("Odometer: %u\r\n", value); }, 1000);
 
-  auto engineQuery = std::make_unique<UdsEngineSpeedQuery>([](float value)
+  auto engineQuery = std::make_unique<UdsEngineSpeedQuery>([](const float value)
                                                            { Serial.printf("Engine: %.1f\r\n", value); }, 1000);
 
-  auto coolandTemperatureQuery = std::make_unique<UdsEngineCoolantTemperatureQuery>([](int16_t value)
+  auto coolandTemperatureQuery = std::make_unique<UdsEngineCoolantTemperatureQuery>([](const int16_t value)
                                                                                     { Serial.printf("Coolant: %d\r\n", value); }, 1000);
 
-  auto vehicleSpeedQuery = std::make_unique<UdsVehicleSpeedQuery>([](uint8_t value)
+  auto vehicleSpeedQuery = std::make_unique<UdsVehicleSpeedQuery>([](const uint8_t value)
                                                                   { Serial.printf("Speed: %d\r\n", value); }, 1000);
 
   udsQueryManager.addQuery(std::move(tankLevelQuery));

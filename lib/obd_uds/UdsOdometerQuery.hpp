@@ -4,7 +4,7 @@
 
 #define ODOMETER_ID 0xA6u
 
-using UdsOdometerQueryCallback = std::function<void(uint32_t)>;
+using UdsOdometerQueryCallback = std::function<void(const uint32_t)>;
 
 class UdsOdometerQuery : public UdsQuery
 {
@@ -14,11 +14,15 @@ public:
         : UdsQuery(ODOMETER_ID, interval),
           callback(callback) {}
 
-    void responseReceived(const std::vector<uint8_t> &data) override
+    void responseReceived(const uint8_t *const data, const uint8_t len) override
     {
+        if (len != 8)
+        {
+            return;
+        }
         if (callback)
         {
-            const uds_frame_s *const uds_frame = (const uds_frame_s *)data.data();
+            const uds_frame_s *const uds_frame = (const uds_frame_s *)data;
             const uint32_t odometer = uds_frame->data[0u] << 24 |
                                       uds_frame->data[1u] << 16 |
                                       uds_frame->data[2u] << 8 |

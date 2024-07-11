@@ -4,7 +4,7 @@
 
 #define DIST_TRAV_WITH_MALF_LAMP 0x21u
 
-using UdsDistanceTraveledWithMalfLampCallback = std::function<void(uint8_t)>;
+using UdsDistanceTraveledWithMalfLampCallback = std::function<void(const uint8_t)>;
 
 class UdsDistanceTraveledWithMalfLamp : public UdsQuery
 {
@@ -13,11 +13,15 @@ public:
                                     const uint32_t interval = 0u) : UdsQuery(DIST_TRAV_WITH_MALF_LAMP, interval),
                                                                     callback(callback) {}
 
-    void responseReceived(const std::vector<uint8_t> &data) override
+    void responseReceived(const uint8_t *const data, const uint8_t len) override
     {
+        if (len != 8)
+        {
+            return;
+        }
         if (callback)
         {
-            const uds_frame_s *const uds_frame = (const uds_frame_s *)data.data();
+            const uds_frame_s *const uds_frame = (const uds_frame_s *)data;
             const uint16_t distance = uds_frame->data[0u] << 8 | uds_frame->data[1u];
             callback(distance);
         }
